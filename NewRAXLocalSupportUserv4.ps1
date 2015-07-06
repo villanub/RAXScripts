@@ -19,13 +19,13 @@ function Set-LocalAccount {
     $user = Get-WMIObject Win32_UserAccount -ComputerName $env:COMPUTERNAME -Filter "Name='$RAXUser'"
     #Creating User Account if it does not exist
     if (!$user) {
-        NET USER $RAXUser $RAXPassword /ADD /y
+        NET USER $RAXUser "$RAXPassword" /ADD /y
         NET LOCALGROUP "Administrators" "$RAXUser" /add
         WMIC USERACCOUNT WHERE "Name='$RAXUser'" SET PasswordExpires=FALSE
     }
     else {
         Write-Host "Warning: User Exists. Resetting Password."
-        NET USER $RAXUser $RAXPassword /y
+        NET USER $RAXUser "$RAXPassword" /y
     }
     
 }
@@ -36,7 +36,7 @@ function Set-DomainAccount {
         -EmailAddress "AzureSupport@rackspace.com" `
         -Path $OU -Enabled $true `
         -ChangePasswordAtLogon $false -PasswordNeverExpires $true `
-        -AccountPassword $RAXPassword -PassThru
+        -AccountPassword "$RAXPassword" -PassThru
 }
 
 
@@ -94,7 +94,7 @@ if ((Get-WmiObject Win32_ComputerSystem).PartofDomain -eq $true) {
         {
             Write-Host "Warning: User Exists"
             $oUser = [ADSI]"LDAP://$RAXUser"
-            $ouser.psbase.invoke("SetPassword",$RAXPassword)
+            $ouser.psbase.invoke("SetPassword","$RAXPassword")
             $ouser.psbase.CommitChanges() 
         }   
     } 
