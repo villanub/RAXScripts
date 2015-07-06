@@ -111,3 +111,5 @@ else {
 # Removing log file with password
 ##########################
 Remove-Item "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\CustomScriptHandler.log"
+Remove-Item "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\RuntimeSettings\*.settings"
+Remove-Item "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\Status\*.status"
