@@ -55,7 +55,7 @@ if ((Get-WmiObject Win32_ComputerSystem).PartofDomain -eq $true) {
     }
 
     $ComputerProperties = Get-ADComputer $env:COMPUTERNAME -properties *
-    if ($ComputerProperties.PrimaryGroupID -eq “516”) {
+    if ($ComputerProperties.PrimaryGroupID -eq "516") {
         Write-Host "$env:COMPUTERNAME is a Domain Controller”
         $ISDC = $TRUE 
     }
