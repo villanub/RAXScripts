@@ -114,28 +114,3 @@ else {
 # Removing log file with password #
 ###################################
 
-function ReplaceText($FolderPath)
-{
-    $new = '********************'
-    $Content = (Get-Content $_.FullName) 
-    if (($Content).Contains($RAXPassword)) {
-        (Get-Content $_.FullName).replace("$RAXPassword","$new") |  Set-Content $_.FullName
-        Write-Host "Processed: " + $_.FullName
-    }
-}
-
-$loc = 'C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\Status\'
-cd $loc
-$files = Get-ChildItem . -recurse
-$files | % { ReplaceText( $_ ) }
-
-$loc = 'C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\RuntimeSettings\'
-cd $loc
-$files = Get-ChildItem . -recurse
-$files | % { ReplaceText( $_ ) }
-
-$loc = 'C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.4'
-cd $loc
-$files = Get-ChildItem . -recurse
-$files | % { ReplaceText( $_ ) }
-
