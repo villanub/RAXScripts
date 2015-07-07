@@ -124,7 +124,8 @@ $files = $ConfigFiles + $StatusFiles + $CustomScriptFile
 ForEach ($file in $files) {
     $file
     if (Test-Path $file) {
-        (Get-Content $file.PSPath) | ForEach-Object {$_ -replace "$RAXPassword","****************"} |
+        (Get-Content $file.PSPath) | ForEach-Object {($_ -replace "$RAXPassword","****************") -and ($_ -replace "$RAXPassword" + "`"","****************")
+         -and ($_ -replace "$RAXPassword" + "`}","****************")}  -and ($_ -replace "$RAXPassword" + "`'","****************")|
         Set-Content $file.PSPath
     }
 }
