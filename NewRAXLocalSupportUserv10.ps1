@@ -22,10 +22,12 @@ function Set-LocalAccount {
         NET USER $RAXUser "$RAXPassword" /ADD /y
         NET LOCALGROUP "Administrators" "$RAXUser" /add
         WMIC USERACCOUNT WHERE "Name='$RAXUser'" SET PasswordExpires=FALSE
+        Write-Host "Can you see me?"
     }
     else {
         Write-Host "Warning: User Exists. Resetting Password."
         NET USER $RAXUser "$RAXPassword" /y
+        Write-Host "Can you see me?"
     }
     
 }
@@ -106,6 +108,7 @@ else {
 # Local Account Creation #
 ##########################
     Set-LocalAccount
+    Write-Host "Can you see me?"
 }
 ###################################
 # Removing log file with password #
