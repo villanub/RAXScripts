@@ -107,9 +107,24 @@ else {
 ##########################
     Set-LocalAccount
 }
-##########################
-# Removing log file with password
-##########################
-Remove-Item "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\CustomScriptHandler.log"
-Remove-Item "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\RuntimeSettings\*.settings"
-Remove-Item "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\Status\*.status"
+###################################
+# Removing log file with password #
+###################################
+
+if (Test-Path "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\RuntimeSettings\") {
+    $ConfigFiles = Get-ChildItem "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\RuntimeSettings\" *.config -Recurse
+}
+if (Test-Path "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\Status\") {
+    $StatusFiles = Get-ChildItem "C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\Status\" *.status -Recurse
+}
+$CustomScriptFile = "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\1.4\CustomScriptHandler.log"
+
+$files = $ConfigFiles + $StatusFiles + $CustomScriptFile
+
+ForEach ($file in $files) {
+    $file
+    if (Test-Path $file) {
+        (Get-Content $file.PSPath) | ForEach-Object {$_ -replace "$RAXPassword","****************"} |
+        Set-Content $file.PSPath
+    }
+}
