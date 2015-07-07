@@ -121,11 +121,11 @@ $CustomScriptFile = "C:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScript
 
 $files = $ConfigFiles + $StatusFiles + $CustomScriptFile
 
+[regex]$regex_find = $RAXPassword
 ForEach ($file in $files) {
     $file
     if (Test-Path $file) {
-        (Get-Content $file.PSPath) | ForEach-Object {($_ -replace "$RAXPassword","****************") -and ($_ -replace "$RAXPassword" + "`"","****************")
-         -and ($_ -replace "$RAXPassword" + "`}","****************")}  -and ($_ -replace "$RAXPassword" + "`'","****************")|
+        (Get-Content $file.PSPath) | ForEach-Object {$_ -replace $regex_find,"****************"} |
         Set-Content $file.PSPath
     }
 }
